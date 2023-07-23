@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 5.46 LTS (Windows - x86)">
+  <section name="config">
+    <options closefiles="1" openmode="0" name="PNB\paddlesandball"/>
+    <comment>Example paddle game simulator using PNB for game logic.</comment>
+  </section>
+  <section name="data">
+    <explorer view="..\..\PNB2\_src\" pattern="0"/>
+    <log show="1"/>
+    <lastopen date="2023-07-23 20:43" user="Dino" host="HUSKLET"/>
+  </section>
+  <section name="files">
+    <file name="paddlesandball.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="edb9772022a466be31704cae526d7ab5"/>
+    </file>
+  </section>
+  <section name="targets">
+    <target name="EXEw86" enabled="1" default="1">
+      <inputfile value="paddlesandball.pb"/>
+      <outputfile value="..\pnbpaddlesandball.exe"/>
+      <compiler version="PureBasic 5.46 LTS (Windows - x86)"/>
+      <executable value="..\pnbpaddlesandball.exe"/>
+      <directory value="..\"/>
+      <options unicode="1" xpskin="1" debug="1"/>
+      <format exe="console" cpu="0"/>
+    </target>
+    <target name="EXEw64" enabled="1" default="0">
+      <inputfile value="paddlesandball.pb"/>
+      <outputfile value="..\pnbpaddlesandball64.exe"/>
+      <compiler version="PureBasic 5.46 LTS (Windows - x64)"/>
+      <executable value="..\pnbpaddlesandball64.exe"/>
+      <directory value="..\"/>
+      <options unicode="1" xpskin="1" debug="1"/>
+      <format exe="console" cpu="0"/>
+    </target>
+  </section>
+</project>
