@@ -1,0 +1,211 @@
+(
+    Function (ObjectPositionDeltaTrion) Do (
+    Sign (Matrix Do - (Get (+ Object1 .Position)) (Get (+ Object2 .Position)))
+    ) With (Object1 Object2)
+)
+
+(
+    Function (PaddleAI1) Do (
+        (Set (+ Object .Velocity)
+            (Matrix Do * (Get (+ Object .Velocity)) (0.0 0.8))
+        )
+        (Set (+ Object .Velocity)
+            (Matrix Do + (Get (+ Object .Velocity)) (0.0 (* (ObjectPositionDeltaTrion Ball Object) 0.5)))
+        )
+        ) With (Object)
+)
+
+(
+    Function (PaddleAI2) Do (
+        If (Not (> 5.0 (- (Element 2 (Get (+ Object .Position))) (Element 2 (Get Ball.Position))) -5.0)) Do (
+            (Set (+ Object .Velocity)
+                (Matrix Do * (Get (+ Object .Velocity)) (0.0 0.55))
+            )
+            (Set (+ Object .Velocity)
+                (Matrix Do + (Get (+ Object .Velocity)) (0.0 (* (ObjectPositionDeltaTrion Ball Object) -1.0)))
+            )
+        )
+    
+    ) With (Object)
+)
+
+(
+    Function (RectCenterCollision) Do (
+        &
+        (< (- X1 (/ W1 2.0)) (+ X2 (/ W2 2.0)))
+        (> (+ X1 (/ W1 2.0)) (- X2 (/ W2 2.0)))
+        (< (- Y1 (/ H1 2.0)) (+ Y2 (/ H2 2.0)))
+        (> (+ Y1 (/ H1 2.0)) (- Y2 (/ H2 2.0)))
+    )
+    With (X1 Y1 W1 H1 X2 Y2 W2 H2)
+)
+
+(
+    Function (BallCollision) Do (
+        (
+            If (RectCenterCollision (Get Ball.Position) 5 5 (Get (+ Object .Position)) 5 15) Do (
+                (
+                    If (RectCenterCollision (Get Ball.Position) 5 5 (Get (+ Object .Position)) 5 5) Do (
+                        (Set Ball.Velocity (Matrix Do * (Get Ball.Velocity) (1.0 1.2)))
+                    )
+                )
+                (
+                    If (RectCenterCollision (Get Ball.Position) 5 5 (Matrix Do + (Get (+ Object .Position)) (0.0 7.5)) 5 5) Do (
+                        (Set Ball.Velocity (Matrix Do + (Get Ball.Velocity) (0.0 1.0)))
+                    )
+                )
+                (
+                    If (RectCenterCollision (Get Ball.Position) 5 5 (Matrix Do - (Get (+ Object .Position)) (0.0 7.5)) 5 5) Do (
+                        (Set Ball.Velocity (Matrix Do + (Get Ball.Velocity) (0.0 -1.0)))
+                    )
+                )
+                (
+                    If (= Object Paddle.1) Do (
+                        (Set Ball.Position 5.0 (Element 2 (Get Ball.Position)))
+                        (Set Ball.Velocity (Matrix Do * (Get Ball.Velocity) (-1.05 1.0)))
+                    )
+                )
+                (
+                    If (= Object Paddle.2) Do (
+                        (Set Ball.Position 95.0 (Element 2 (Get Ball.Position)))
+                        (Set Ball.Velocity (Matrix Do * (Get Ball.Velocity) (-1.05 1.0)))
+                    )
+                )
+            )
+        )
+    
+    ) With (Object)
+)
+
+(
+    Function (HandleObject) Do (
+    (Set (+ Object .Position) (Matrix Do + (Get (+ Object .Position)) (Get (+ Object .Velocity))))
+    ) With (Object)
+)
+
+(
+    Function (ResetBall) Do (
+        (Set Paddle.1.Position 1.0 50.0)
+        (Set Paddle.1.Velocity 0.0 0.0)
+        (Set Paddle.2.Position 98.0 50.0)
+        (Set Paddle.2.Velocity 0.0 0.0)
+        
+        (Set Ball.Position 50.0 50.0)
+        (Set Ball.Velocity (- (* (Random 1) (* (Get Game.Global.BallSpeed) 2)) (Get Game.Global.BallSpeed)) (* (Random -100 100) 0.01))
+        (Render 1000)
+    )
+)
+
+(
+    Function (Init) Do (
+        (Set Game.Local.Score 0 0)
+        
+        (Set Game.Global.ScoreTarget 10)
+        (Set Game.Global.BallSpeed 0.8)
+        
+        (ResetBall)
+    )
+)
+
+(
+    Function (Main) Do (
+        (Init)
+        (
+        
+            While (& (Matrix Do > ((Get Game.Global.ScoreTarget) (Get Game.Global.ScoreTarget)) (Get Game.Local.Score))) Do (
+                
+                (PaddleAI1 Paddle.1)
+                (PaddleAI2 Paddle.2)
+                
+                (HandleObject Ball)
+                (HandleObject Paddle.1)
+                (HandleObject Paddle.2)
+                
+                (
+                    If (> (Abs (Element 1 (Get Ball.Velocity))) 2.0) Do (
+                        (Set Ball.Velocity (* (Sign (Element 1 (Get Ball.Velocity))) 2.0) (Element 2 (Get Ball.Velocity)))
+                    )
+                )
+                
+                (
+                    If (> (Abs (Element 2 (Get Ball.Velocity))) 2.5) Do (
+                        (Set Ball.Velocity (Element 1 (Get Ball.Velocity)) (* (Sign (Element 2 (Get Ball.Velocity))) 2.5))
+                    )
+                )
+                
+                (
+                    If (< (Element 2 (Get Ball.Position)) 0.0) Do (
+                        (Set Ball.Position (Element 1 (Get Ball.Position)) 0.0)
+                        (Set Ball.Velocity (Matrix Do * (Get Ball.Velocity) (1.0 -1.0)))
+                    )
+                )
+                
+                (
+                    If (> (Element 2 (Get Ball.Position)) 100.0) Do (
+                        (Set Ball.Position (Element 1 (Get Ball.Position)) 100.0)
+                        (Set Ball.Velocity (Matrix Do * (Get Ball.Velocity) (1.0 -1.0)))
+                    )
+                )
+                
+                (
+                    If (> (Element 2 (Get Paddle.1.Position)) 92.5) Do (
+                        (Set Paddle.1.Position (Element 1 (Get Paddle.1.Position)) 92.5)
+                        (Set Paddle.1.Velocity 0 0)
+                    )
+                )
+                
+                (
+                    If (> (Element 2 (Get Paddle.2.Position)) 92.5) Do (
+                        (Set Paddle.2.Position (Element 1 (Get Paddle.2.Position)) 92.5)
+                        (Set Paddle.2.Velocity 0 0)
+                    )
+                )
+                
+                (
+                    If (< (Element 2 (Get Paddle.1.Position)) 7.0) Do (
+                        (Set Paddle.1.Position (Element 1 (Get Paddle.1.Position)) 7.0)
+                        (Set Paddle.1.Velocity 0 0)
+                    )
+                )
+                
+                (
+                    If (< (Element 2 (Get Paddle.2.Position)) 7.0) Do (
+                        (Set Paddle.2.Position (Element 1 (Get Paddle.2.Position)) 7.0)
+                        (Set Paddle.2.Velocity 0 0)
+                    )
+                )
+                
+                (
+                    If (< (Element 1 (Get Ball.Position)) 5.0) Do (
+                        (BallCollision Paddle.1)
+                        (
+                            If (< (Element 1 (Get Ball.Position)) 0.0) Do (
+                                (Set Game.Local.Score (Matrix Do + (Get Game.Local.Score) (0 1)))
+                                (Output (+ "Player 2 scores. " (Element 2 (Get Game.Local.Score)) " point(s)."))
+                                (ResetBall)
+                            )
+                        )
+                    )
+                )
+                
+                (
+                    If (> (Element 1 (Get Ball.Position)) 95.0) Do (
+                        (BallCollision Paddle.2)
+                        (
+                            If (> (Element 1 (Get Ball.Position)) 100.0) Do (
+                                (Set Game.Local.Score (Matrix Do + (Get Game.Local.Score) (1 0)))
+                                (Output (+ "Player 1 scores. " (Element 1 (Get Game.Local.Score)) " point(s)."))
+                                (ResetBall)
+                            )
+                        )
+                    )
+                )
+                (Render 1)
+            )
+        )
+        (If (>= (Element 1 (Get Game.Local.Score)) (Get Game.Global.ScoreTarget)) Do (Output "Player 1 wins!"))
+        (If (>= (Element 2 (Get Game.Local.Score)) (Get Game.Global.ScoreTarget)) Do (Output "Player 2 wins!"))
+    )
+)
+
+(Fork (Error (Main)))
