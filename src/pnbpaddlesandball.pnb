@@ -200,7 +200,7 @@
                         )
                     )
                 )
-                (Render 1)
+                (Render 10)
             )
         )
         (If (>= (Element 1 (Get Game.Local.Score)) (Get Game.Global.ScoreTarget)) Do (Output "Player 1 wins!"))
