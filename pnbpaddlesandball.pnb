@@ -1,6 +1,6 @@
 (
     Function (ObjectPositionDeltaTrion) Do (
-    Sign (Matrix Do - (Get (+ Object1 .Position)) (Get (+ Object2 .Position)))
+        (Sign (Matrix Do - (Get (+ Object1 .Position)) (Get (+ Object2 .Position))))
     ) With (Object1 Object2)
 )
 
@@ -111,8 +111,7 @@
     Function (Main) Do (
         (Init)
         (
-        
-            While (& (Matrix Do > ((Get Game.Global.ScoreTarget) (Get Game.Global.ScoreTarget)) (Get Game.Local.Score))) Do (
+            While (& (> (Get Game.Global.ScoreTarget) (Element 1 (Get Game.Local.Score))) (> (Get Game.Global.ScoreTarget) (Element 2 (Get Game.Local.Score)))) Do (
                 
                 (PaddleAI1 Paddle.1)
                 (PaddleAI2 Paddle.2)
@@ -120,6 +119,7 @@
                 (HandleObject Ball)
                 (HandleObject Paddle.1)
                 (HandleObject Paddle.2)
+                
                 
                 (
                     If (> (Abs (Element 1 (Get Ball.Velocity))) 2.0) Do (
