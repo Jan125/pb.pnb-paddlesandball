@@ -8,12 +8,12 @@
   <section name="data">
     <explorer view="..\..\PNB2\_src\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2023-07-23 20:43" user="Dino" host="HUSKLET"/>
+    <lastopen date="2024-02-03 10:49" user="Dino" host="HUSKLET"/>
   </section>
   <section name="files">
     <file name="paddlesandball.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="edb9772022a466be31704cae526d7ab5"/>
+      <fingerprint md5="52f2866cdfb61c2951bf87a8eb503263"/>
     </file>
   </section>
   <section name="targets">

@@ -29,7 +29,7 @@ If Not Library
   End
 EndIf
 OpenConsole()
-  WindowGL = OpenWindow(#PB_Any, #PB_Ignore, #PB_Ignore, 400, 400, "PNB/paddlesandball", #PB_Window_SystemMenu|#PB_Window_MinimizeGadget|#PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
+  WindowGL = OpenWindow(#PB_Any, #PB_Ignore, #PB_Ignore, 400, 400, "PNB/paddlesandball", #PB_Window_SystemMenu|#PB_Window_MinimizeGadget)
   CanvasGadget(1, 0, 0, 400, 400)
   
 String.s = "(Function (Render) Do (Invoke None "+Str(@Render())+" (Integer WaitTime)) With (WaitTime) As (100))"
